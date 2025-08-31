@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "products-af8c7"
+  },
+  "targets": {
+    "products-af8c7": {
+      "hosting": {
+        "orkidehsewingmachine": [
+          "products-af8c7"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
