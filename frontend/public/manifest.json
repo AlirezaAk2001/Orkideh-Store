@@ -1,0 +1,20 @@
+{
+  "short_name": "چرخ خیاطی ارکیده",
+  "name": "فروشگاه چرخ خیاطی ارکیده",
+  "icons": [
+    {
+      "src": "favicon-new.ico",
+      "sizes": "128x128",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "apple-icon-new.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
