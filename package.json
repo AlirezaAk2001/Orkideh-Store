@@ -1,9 +1,13 @@
 {
   "name": "orkideh-store",
+  "version": "0.1.0",
   "scripts": {
     "start": "cd frontend && npm start"
   },
   "engines": {
     "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "next": "^15.5.2"
   }
 }
