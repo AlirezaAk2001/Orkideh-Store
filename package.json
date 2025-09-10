@@ -1,0 +1,9 @@
+{
+  "name": "orkideh-store",
+  "scripts": {
+    "start": "cd frontend && npm start"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
