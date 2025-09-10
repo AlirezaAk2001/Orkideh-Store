@@ -1,7 +1,7 @@
 {
   "deploy": {
     "root": "frontend",
-    "buildCommand": "cd frontend && npm install && npm run build",
-    "startCommand": "cd frontend && npm start"
+    "buildCommand": "npm install && npm run build",
+    "startCommand": "npm start"
   }
 }
