@@ -17,5 +17,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/profile/:path*"], // مسیرهایی که نیاز به لاگین دارند
+  matcher: ["/", "/admin/:path*", "/profile/:path*"], // اضافه کردن ریشه
 };
