@@ -66,28 +66,37 @@ const Admin = () => {
   const navigate = useNavigate();
   const [adminName, setAdminName] = useState("");
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        if (allowedAdmins.includes(user.email)) {
-          setAdminName(user.displayName || user.email || "ادمین");
-        } else {
-          navigate("/");
-        }
-      } else {
-        navigate("/login");
-      }
-    });
-    return () => unsubscribe();
-  }, [auth, navigate]);
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       if (allowedAdmins.includes(user.email)) {
+  //         setAdminName(user.displayName || user.email || "ادمین");
+  //       } else {
+  //         navigate("/");
+  //       }
+  //     } else {
+  //       navigate("/login");
+  //     }
+  //   });
+  //   return () => unsubscribe();
+  // }, [auth, navigate]);
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      navigate("/login");
-    } catch (error) {
-      console.error("خطا در خروج:", error);
-    }
+  useEffect(() => {
+  setAdminName("ادمین نمونه");
+  }, []);
+
+  // const handleLogout = async () => {
+  //   try {
+  //     await signOut(auth);
+  //     navigate("/login");
+  //   } catch (error) {
+  //     console.error("خطا در خروج:", error);
+  //   }
+  // };
+
+  const handleLogout = () => {
+  alert("این فقط تست UI است. خروج انجام نمی‌شود!");
+  navigate("/login");
   };
 
   return (

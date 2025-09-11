@@ -4,30 +4,40 @@ import { Box, Typography, Table, TableBody, TableCell, TableHead, TableRow, Sele
 const OrderManagement = () => {
   const [orders, setOrders] = useState([]);
 
-  useEffect(() => {
-    const ordersQuery = query(collection(db, "orders"));
-    const unsubscribe = onSnapshot(ordersQuery, (snapshot) => {
-      const ordersData = snapshot.docs.map((docSnap) => ({
-        id: docSnap.id,
-        ...docSnap.data(),
-      }));
-      setOrders(ordersData);
-    }, (error) => {
-      console.error("خطا در دریافت سفارش‌ها:", error);
-    });
+  // useEffect(() => {
+  //   const ordersQuery = query(collection(db, "orders"));
+  //   const unsubscribe = onSnapshot(ordersQuery, (snapshot) => {
+  //     const ordersData = snapshot.docs.map((docSnap) => ({
+  //       id: docSnap.id,
+  //       ...docSnap.data(),
+  //     }));
+  //     setOrders(ordersData);
+  //   }, (error) => {
+  //     console.error("خطا در دریافت سفارش‌ها:", error);
+  //   });
 
-    return () => unsubscribe();
+  //   return () => unsubscribe();
+  // }, []);
+
+  useEffect(() => {
+  setOrders([
+    { id: "1", products: [{ name: "محصول 1", quantity: 2 }], status: "processing", totalPrice: 2000000, phoneNumber: "09123456789" },
+  ]);
   }, []);
 
-  const updateOrderStatus = async (orderId, newStatus) => {
-    try {
-      const orderRef = doc(db, "orders", orderId);
-      await updateDoc(orderRef, { status: newStatus });
-      alert("وضعیت سفارش با موفقیت به‌روزرسانی شد.");
-    } catch (error) {
-      console.error("خطا در به‌روزرسانی وضعیت سفارش:", error);
-      alert("خطا در به‌روزرسانی وضعیت سفارش.");
-    }
+  // const updateOrderStatus = async (orderId, newStatus) => {
+  //   try {
+  //     const orderRef = doc(db, "orders", orderId);
+  //     await updateDoc(orderRef, { status: newStatus });
+  //     alert("وضعیت سفارش با موفقیت به‌روزرسانی شد.");
+  //   } catch (error) {
+  //     console.error("خطا در به‌روزرسانی وضعیت سفارش:", error);
+  //     alert("خطا در به‌روزرسانی وضعیت سفارش.");
+  //   }
+  // };
+
+  const updateOrderStatus = (orderId, newStatus) => {
+  alert("این فقط تست UI است. به‌روزرسانی انجام نمی‌شود!");
   };
 
   return (

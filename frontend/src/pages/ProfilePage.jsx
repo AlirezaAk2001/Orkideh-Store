@@ -1,16 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogOut, Package, Camera } from "lucide-react";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  doc,
-  updateDoc,
-  getDoc,
-  onSnapshot,
-} from "firebase/firestore";
 
 export default function ProfilePage() {
   const [user, loading] = useAuthState(auth);
@@ -55,19 +45,24 @@ export default function ProfilePage() {
     return palette[idx];
   };
 
-  const handleLogout = async () => {
-    setIsLoggingOut(true);
-    try {
-      await signOut(auth);
-      setTimeout(() => {
-        navigate("/");
-      }, 100);
-    } catch (error) {
-      console.error("خطا در خروج از حساب:", error);
-      alert("خطا در خروج از حساب. لطفاً دوباره تلاش کنید.");
-    } finally {
-      setIsLoggingOut(false);
-    }
+  // const handleLogout = async () => {
+  //   setIsLoggingOut(true);
+  //   try {
+  //     await signOut(auth);
+  //     setTimeout(() => {
+  //       navigate("/");
+  //     }, 100);
+  //   } catch (error) {
+  //     console.error("خطا در خروج از حساب:", error);
+  //     alert("خطا در خروج از حساب. لطفاً دوباره تلاش کنید.");
+  //   } finally {
+  //     setIsLoggingOut(false);
+  //   }
+  // };
+
+  const handleLogout = () => {
+  alert("این فقط تست UI است. خروج انجام نمی‌شود!");
+  navigate("/");
   };
 
   const handleImageUpload = (uploadedUrl) => {
@@ -79,15 +74,17 @@ export default function ProfilePage() {
     }
   };
 
-  const updateProfileImage = async (url) => {
-    try {
-      await updateDoc(doc(db, "users", user.uid), { profileImageUrl: url });
-      console.log("تصویر پروفایل در Firestore به‌روزرسانی شد:", url);
-    } catch (err) {
-      console.error("خطا در به‌روزرسانی تصویر پروفایل:", err);
-      setError("خطا در ذخیره تصویر در پروفایل.");
-    }
-  };
+  // const updateProfileImage = async (url) => {
+  //   try {
+  //     await updateDoc(doc(db, "users", user.uid), { profileImageUrl: url });
+  //     console.log("تصویر پروفایل در Firestore به‌روزرسانی شد:", url);
+  //   } catch (err) {
+  //     console.error("خطا در به‌روزرسانی تصویر پروفایل:", err);
+  //     setError("خطا در ذخیره تصویر در پروفایل.");
+  //   }
+  // };
+
+  const updateProfileImage = () => {};
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -145,18 +142,23 @@ export default function ProfilePage() {
     setError(null);
   };
 
-  const handleDeleteImage = async () => {
-    try {
-      setIsUploading(true);
-      await updateDoc(doc(db, "users", user.uid), { profileImageUrl: "" });
-      setProfileImage(null);
-      setPreviewUrl(null);
-    } catch (error) {
-      console.error("خطا در حذف عکس:", error);
-      alert("خطا در حذف عکس.");
-    } finally {
-      setIsUploading(false);
-    }
+  // const handleDeleteImage = async () => {
+  //   try {
+  //     setIsUploading(true);
+  //     await updateDoc(doc(db, "users", user.uid), { profileImageUrl: "" });
+  //     setProfileImage(null);
+  //     setPreviewUrl(null);
+  //   } catch (error) {
+  //     console.error("خطا در حذف عکس:", error);
+  //     alert("خطا در حذف عکس.");
+  //   } finally {
+  //     setIsUploading(false);
+  //   }
+  // };
+
+  const handleDeleteImage = () => {
+  setProfileImage(null);
+  setPreviewUrl(null);
   };
 
   useEffect(() => {
@@ -165,85 +167,95 @@ export default function ProfilePage() {
     };
   }, [previewUrl]);
 
+  // useEffect(() => {
+  //   if (!user) {
+  //     setLoadingData(false);
+  //     setUserData(null);
+  //     setOrders([]);
+  //     setAddresses([]);
+  //     setProfileImage(null);
+  //     if (unsubscribeOrdersRef.current) {
+  //       unsubscribeOrdersRef.current();
+  //     }
+  //     return;
+  //   }
+
+  //   const fetchData = async () => {
+  //     setLoadingData(true);
+  //     try {
+  //       const userSnap = await getDoc(doc(db, "users", user.uid));
+  //       if (userSnap.exists()) {
+  //         const userData = userSnap.data();
+  //         setUserData(userData);
+  //         setProfileImage(userData.profileImageUrl || null);
+  //       }
+
+  //       const addressesQuery = query(collection(db, "addresses"), where("uid", "==", user.uid));
+  //       const addressesSnapshot = await getDocs(addressesQuery);
+  //       const addressesData = addressesSnapshot.docs.map((docSnap) => ({
+  //         id: docSnap.id,
+  //         ...docSnap.data(),
+  //       }));
+  //       setAddresses(addressesData);
+  //     } catch (error) {
+  //       console.error("خطا در دریافت داده‌ها:", error);
+  //     } finally {
+  //       setLoadingData(false);
+  //     }
+  //   };
+
+  //   fetchData();
+
+  //   const ordersQuery = query(collection(db, "orders"), where("userId", "==", user.uid));
+  //   unsubscribeOrdersRef.current = onSnapshot(ordersQuery, (snapshot) => {
+  //     const ordersData = snapshot.docs.map((docSnap) => {
+  //       const data = docSnap.data();
+  //       let products = Array.isArray(data.products) ? data.products : [];
+  //       const parsedProducts = [];
+  //       let currentProduct = {};
+
+  //       products.forEach((str) => {
+  //         const trimmed = String(str).trim().replace(/["']/g, "");
+  //         const [key, value] = trimmed.split(":").map((s) => s.trim());
+
+  //         if (key === "name") {
+  //           currentProduct.name = value;
+  //         } else if (key === "price") {
+  //           const n = parseInt(value, 10);
+  //           currentProduct.price = Number.isFinite(n) ? n : 0;
+  //         } else if (key === "quantity") {
+  //           const q = parseInt(value, 10);
+  //           currentProduct.quantity = Number.isFinite(q) ? q : 0;
+  //           if (currentProduct.name) parsedProducts.push(currentProduct);
+  //           currentProduct = {};
+  //         } else if (key === "imageUrl") {
+  //           currentProduct.imageUrl = value;
+  //         }
+  //       });
+
+  //       return { id: docSnap.id, ...data, products: parsedProducts };
+  //     });
+  //     setOrders(ordersData);
+  //   }, (error) => {
+  //     console.error("خطا در گوش دادن به سفارش‌ها:", error);
+  //   });
+
+  //   return () => {
+  //     if (unsubscribeOrdersRef.current) {
+  //       unsubscribeOrdersRef.current();
+  //     }
+  //   };
+  // }, [user]);
+
   useEffect(() => {
-    if (!user) {
-      setLoadingData(false);
-      setUserData(null);
-      setOrders([]);
-      setAddresses([]);
-      setProfileImage(null);
-      if (unsubscribeOrdersRef.current) {
-        unsubscribeOrdersRef.current();
-      }
-      return;
-    }
-
-    const fetchData = async () => {
-      setLoadingData(true);
-      try {
-        const userSnap = await getDoc(doc(db, "users", user.uid));
-        if (userSnap.exists()) {
-          const userData = userSnap.data();
-          setUserData(userData);
-          setProfileImage(userData.profileImageUrl || null);
-        }
-
-        const addressesQuery = query(collection(db, "addresses"), where("uid", "==", user.uid));
-        const addressesSnapshot = await getDocs(addressesQuery);
-        const addressesData = addressesSnapshot.docs.map((docSnap) => ({
-          id: docSnap.id,
-          ...docSnap.data(),
-        }));
-        setAddresses(addressesData);
-      } catch (error) {
-        console.error("خطا در دریافت داده‌ها:", error);
-      } finally {
-        setLoadingData(false);
-      }
-    };
-
-    fetchData();
-
-    const ordersQuery = query(collection(db, "orders"), where("userId", "==", user.uid));
-    unsubscribeOrdersRef.current = onSnapshot(ordersQuery, (snapshot) => {
-      const ordersData = snapshot.docs.map((docSnap) => {
-        const data = docSnap.data();
-        let products = Array.isArray(data.products) ? data.products : [];
-        const parsedProducts = [];
-        let currentProduct = {};
-
-        products.forEach((str) => {
-          const trimmed = String(str).trim().replace(/["']/g, "");
-          const [key, value] = trimmed.split(":").map((s) => s.trim());
-
-          if (key === "name") {
-            currentProduct.name = value;
-          } else if (key === "price") {
-            const n = parseInt(value, 10);
-            currentProduct.price = Number.isFinite(n) ? n : 0;
-          } else if (key === "quantity") {
-            const q = parseInt(value, 10);
-            currentProduct.quantity = Number.isFinite(q) ? q : 0;
-            if (currentProduct.name) parsedProducts.push(currentProduct);
-            currentProduct = {};
-          } else if (key === "imageUrl") {
-            currentProduct.imageUrl = value;
-          }
-        });
-
-        return { id: docSnap.id, ...data, products: parsedProducts };
-      });
-      setOrders(ordersData);
-    }, (error) => {
-      console.error("خطا در گوش دادن به سفارش‌ها:", error);
-    });
-
-    return () => {
-      if (unsubscribeOrdersRef.current) {
-        unsubscribeOrdersRef.current();
-      }
-    };
-  }, [user]);
+  setUserData({ username: "کاربر نمونه", profileImageUrl: "/img/default-profile.jpg" });
+  setOrders([
+    { id: "1", userId: "testUser", products: [{ name: "محصول 1", quantity: 2 }], status: "processing", createdAt: new Date() },
+  ]);
+  setAddresses([{ id: "1", address: "تهران، خیابان نمونه" }]);
+  setProfileImage("/img/default-profile.jpg");
+  setLoadingData(false);
+  }, []);
 
   const { deliveredCount, returnedCount, processingCount } = useMemo(() => {
     let delivered = 0,
@@ -281,19 +293,21 @@ export default function ProfilePage() {
     }
   };
 
-  const updateOrderStatus = useCallback(
-    async (orderId, newStatus) => {
-      try {
-        const orderRef = doc(db, "orders", orderId);
-        await updateDoc(orderRef, { status: newStatus });
-        alert("وضعیت سفارش با موفقیت به‌روزرسانی شد.");
-      } catch (error) {
-        console.error("خطا در به‌روزرسانی وضعیت سفارش:", error);
-        alert("خطا در به‌روزرسانی وضعیت سفارش.");
-      }
-    },
-    []
-  );
+  // const updateOrderStatus = useCallback(
+  //   async (orderId, newStatus) => {
+  //     try {
+  //       const orderRef = doc(db, "orders", orderId);
+  //       await updateDoc(orderRef, { status: newStatus });
+  //       alert("وضعیت سفارش با موفقیت به‌روزرسانی شد.");
+  //     } catch (error) {
+  //       console.error("خطا در به‌روزرسانی وضعیت سفارش:", error);
+  //       alert("خطا در به‌روزرسانی وضعیت سفارش.");
+  //     }
+  //   },
+  //   []
+  // );
+
+  const updateOrderStatus = () => {};
 
   if (loading || loadingData) {
     return (

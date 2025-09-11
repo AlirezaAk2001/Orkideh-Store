@@ -1,8 +1,8 @@
 // src/context/AuthContext.js
 import { createContext, useContext, useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode"; // تغییر از import jwtDecode to import { jwtDecode }
+import { jwtDecode } from "jwt-decode";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
         const user = localStorage.getItem("user");
 
         if (token && user) {
-          const decodedToken = jwtDecode(token); // استفاده از jwtDecode
+          const decodedToken = jwtDecode(token);
           const isExpired = decodedToken.exp * 1000 < Date.now();
           if (isExpired) {
             logout();
@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = (user, token) => {
     try {
-      const decodedToken = jwtDecode(token); // استفاده از jwtDecode
+      const decodedToken = jwtDecode(token);
       if (decodedToken.exp * 1000 < Date.now()) throw new Error("توکن منقضی شده است");
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));

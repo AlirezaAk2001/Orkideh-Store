@@ -54,8 +54,7 @@
   },
   "eslintConfig": {
     "extends": [
-      "next/core-web-vitals",
-      "react-app/jest"
+      "next/core-web-vitals"
     ]
   },
   "browserslist": {

@@ -12,17 +12,21 @@ export default function CartPage() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [showForm, setShowForm] = useState(false);
 
+  // useEffect(() => {
+  //   if (!user) {
+  //     navigate("/login");
+  //   } else {
+  //     console.log("User logged in:", user); // برای دیباگ
+  //   }
+  //   console.log("Cart Items:", cartItems); // دیباگ cartItems
+  // }, [user, navigate, cartItems]); // وابستگی‌ها شامل cartItems
+
   useEffect(() => {
-    if (!user) {
-      navigate("/login");
-    } else {
-      console.log("User logged in:", user); // برای دیباگ
-    }
-    console.log("Cart Items:", cartItems); // دیباگ cartItems
-  }, [user, navigate, cartItems]); // وابستگی‌ها شامل cartItems
+  setShowForm(true); // فرض می‌کنیم کاربر لاگین کرده
+  }, []);
 
   // تنظیمات EmailJS
-  emailjs.init("ZFRSHMt6AzeaL70VO"); // User ID از پنل EmailJS
+  // emailjs.init("ZFRSHMt6AzeaL70VO"); // User ID از پنل EmailJS
 
   const handleSubmitOrder = () => {
     if (!user || !cartItems.length) {
@@ -32,64 +36,74 @@ export default function CartPage() {
     setShowForm(true);
   };
 
-  const handleConfirmOrder = async (e) => {
-    e.preventDefault();
-    if (!phoneNumber) {
-      alert(".لطفاً شماره تلفن خود را وارد کنید");
-      return;
-    }
+  // const handleConfirmOrder = async (e) => {
+  //   e.preventDefault();
+  //   if (!phoneNumber) {
+  //     alert(".لطفاً شماره تلفن خود را وارد کنید");
+  //     return;
+  //   }
 
-    try {
-      const newOrderId = doc(collection(db, "orders")).id;
-      const totalPrice = cartItems.reduce((sum, item) => {
-        const itemPrice = parseFloat(item.price) || 0; // تبدیل به عدد
-        const itemQuantity = item.quantity || 1;
-        return sum + itemPrice * itemQuantity;
-      }, 0);
-      const productNames = cartItems.map((item) => item.title).join(", "); // استفاده از title به‌جای name
+  //   try {
+  //     const newOrderId = doc(collection(db, "orders")).id;
+  //     const totalPrice = cartItems.reduce((sum, item) => {
+  //       const itemPrice = parseFloat(item.price) || 0; // تبدیل به عدد
+  //       const itemQuantity = item.quantity || 1;
+  //       return sum + itemPrice * itemQuantity;
+  //     }, 0);
+  //     const productNames = cartItems.map((item) => item.title).join(", "); // استفاده از title به‌جای name
 
-      const formattedProducts = cartItems.map((item) => ({
-        name: item.title, // استفاده از title به‌عنوان نام
-        price: parseFloat(item.price) || 0,
-        quantity: item.quantity || 1,
-      }));
+  //     const formattedProducts = cartItems.map((item) => ({
+  //       name: item.title, // استفاده از title به‌عنوان نام
+  //       price: parseFloat(item.price) || 0,
+  //       quantity: item.quantity || 1,
+  //     }));
 
-      // ذخیره سفارش توی Firestore
-      await setDoc(doc(db, "orders", newOrderId), {
-        userId: user.uid,
-        products: formattedProducts,
-        status: "processing",
-        createdAt: new Date(),
-        totalPrice: totalPrice,
-        phoneNumber: phoneNumber,
-      });
+  //     // ذخیره سفارش توی Firestore
+  //     await setDoc(doc(db, "orders", newOrderId), {
+  //       userId: user.uid,
+  //       products: formattedProducts,
+  //       status: "processing",
+  //       createdAt: new Date(),
+  //       totalPrice: totalPrice,
+  //       phoneNumber: phoneNumber,
+  //     });
 
-      // ارسال ایمیل با EmailJS
-      const emailParams = {
-        to_email: "poshtibani.orkideh@gmail.com",
-        from_name: "سایت چرخ خیاطی ارکیده",
-        user_name: user.displayName || "کاربر ناشناس",
-        phone_number: phoneNumber,
-        product_names: productNames,
-        order_id: newOrderId,
-      };
+  //     // ارسال ایمیل با EmailJS
+  //     const emailParams = {
+  //       to_email: "poshtibani.orkideh@gmail.com",
+  //       from_name: "سایت چرخ خیاطی ارکیده",
+  //       user_name: user.displayName || "کاربر ناشناس",
+  //       phone_number: phoneNumber,
+  //       product_names: productNames,
+  //       order_id: newOrderId,
+  //     };
 
-      await emailjs.send("service_bje52sn", "template_xuuiuss", emailParams);
+  //     await emailjs.send("service_bje52sn", "template_xuuiuss", emailParams);
 
-      // نمایش SweetAlert
-      Swal.fire({
-        icon: "success",
-        title: "موفقیت!",
-        text: ".سفارش شما با موفقیت ثبت شد. جهت نهایی کردن سفارش، همکاران ما از تیم پشتیبانی فروشگاه چرخ خیاطی ارکیده با شما تماس خواهند گرفت",
-        confirmButtonText: "باشه",
-      }).then(() => {
-        setShowForm(false);
-        cartItems.forEach((item) => removeFromCart(item.id));
-      });
-    } catch (error) {
-      console.error("Error details:", error);
-      alert(".خطا در ثبت سفارش یا ارسال ایمیل. لطفاً دوباره تلاش کنید");
-    }
+  //     // نمایش SweetAlert
+  //     Swal.fire({
+  //       icon: "success",
+  //       title: "موفقیت!",
+  //       text: ".سفارش شما با موفقیت ثبت شد. جهت نهایی کردن سفارش، همکاران ما از تیم پشتیبانی فروشگاه چرخ خیاطی ارکیده با شما تماس خواهند گرفت",
+  //       confirmButtonText: "باشه",
+  //     }).then(() => {
+  //       setShowForm(false);
+  //       cartItems.forEach((item) => removeFromCart(item.id));
+  //     });
+  //   } catch (error) {
+  //     console.error("Error details:", error);
+  //     alert(".خطا در ثبت سفارش یا ارسال ایمیل. لطفاً دوباره تلاش کنید");
+  //   }
+  // };
+
+  const handleConfirmOrder = (e) => {
+  e.preventDefault();
+  if (!phoneNumber) {
+    alert(".لطفاً شماره تلفن خود را وارد کنید");
+    return;
+  }
+  alert("این فقط تست UI است. سفارش ثبت نمی‌شود!");
+  setShowForm(false);
   };
 
   const handleRemoveFromCartWithConfirmation = (itemId) => {

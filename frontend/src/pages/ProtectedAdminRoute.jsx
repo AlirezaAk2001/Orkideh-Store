@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContext"; // همون رو نگه دار
 import { CircularProgress } from "@mui/material";
 
 const adminEmails = ["alireza.akhoondi1@gmail.com"]; // ایمیل‌های ادمین
@@ -8,7 +8,6 @@ const adminEmails = ["alireza.akhoondi1@gmail.com"]; // ایمیل‌های اد
 const ProtectedAdminRoute = ({ children }) => {
   const { currentUser, loading } = useContext(AuthContext);
 
-  // لودینگ اولیه
   if (loading) {
     return (
       <div
@@ -20,12 +19,10 @@ const ProtectedAdminRoute = ({ children }) => {
     );
   }
 
-  // اگر لاگین نکرده → صفحه لاگین
   if (!currentUser) {
     return <Navigate to="/login" replace />;
   }
 
-  // اگر ادمین نیست → صفحه اصلی
   const isAdmin = adminEmails.some(
     (email) => email.toLowerCase() === currentUser.email.toLowerCase()
   );
@@ -33,7 +30,6 @@ const ProtectedAdminRoute = ({ children }) => {
     return <Navigate to="/" replace />;
   }
 
-  // اگر همه‌چیز اوکیه → نمایش محتوای صفحه
   return children;
 };
 

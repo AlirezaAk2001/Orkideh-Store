@@ -23,31 +23,38 @@ const OrdersPage = () => {
   const [orderBy, setOrderBy] = useState("createdAt");
   const [order, setOrder] = useState("desc");
 
+  // useEffect(() => {
+  //   if (!user) {
+  //     setLoading(false);
+  //     return;
+  //   }
+
+  //   const ordersQuery = query(collection(db, "orders"), where("userId", "==", user.uid));
+  //   const unsubscribe = onSnapshot(ordersQuery, (snapshot) => {
+  //     const ordersData = snapshot.docs.map((docSnap) => ({
+  //       id: docSnap.id,
+  //       ...docSnap.data(),
+  //     }));
+  //     setOrders(ordersData);
+  //     setLoading(false);
+  //   }, (error) => {
+  //     console.error("خطا در دریافت سفارش‌ها:", error);
+  //     setLoading(false);
+  //   });
+
+  //   return () => unsubscribe();
+  // }, [user]);
+
+  // const handleChange = (event, newValue) => {
+  //   setValue(newValue);
+  // };
+
   useEffect(() => {
-    if (!user) {
-      setLoading(false);
-      return;
-    }
-
-    const ordersQuery = query(collection(db, "orders"), where("userId", "==", user.uid));
-    const unsubscribe = onSnapshot(ordersQuery, (snapshot) => {
-      const ordersData = snapshot.docs.map((docSnap) => ({
-        id: docSnap.id,
-        ...docSnap.data(),
-      }));
-      setOrders(ordersData);
-      setLoading(false);
-    }, (error) => {
-      console.error("خطا در دریافت سفارش‌ها:", error);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, [user]);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  setOrders([
+    { id: "1", userId: "testUser", products: [{ name: "محصول 1", quantity: 2 }], status: "processing", createdAt: new Date() },
+  ]);
+  setLoading(false);
+  }, []);
 
   const handleSort = (property) => {
     const isAsc = orderBy === property && order === "asc";

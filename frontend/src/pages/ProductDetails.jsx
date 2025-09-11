@@ -23,19 +23,36 @@ export default function ProductDetails() {
   const [quantity, setQuantity] = useState(1);
 
   // لود دیتای محصول از MongoDB
-  useEffect(() => {
-  const fetchProduct = async () => {
-    try {
-      const res = await fetch(`/api/products?id=${productId}`);
-      if (!res.ok) throw new Error("Failed to fetch product");
-      const data = await res.json();
-      setProduct(data);
-    } catch (error) {
-      console.error("Error fetching product:", error);
-    }
-  };
-  fetchProduct();
-}, [productId]);
+//   useEffect(() => {
+//   const fetchProduct = async () => {
+//     try {
+//       const res = await fetch(`/api/products?id=${productId}`);
+//       if (!res.ok) throw new Error("Failed to fetch product");
+//       const data = await res.json();
+//       setProduct(data);
+//     } catch (error) {
+//       console.error("Error fetching product:", error);
+//     }
+//   };
+//   fetchProduct();
+// }, [productId]);
+
+useEffect(() => {
+  setProduct({
+    name: "چرخ خیاطی نمونه",
+    price: 1000000,
+    discount: 10,
+    image: "/img/sample.jpg",
+    inventory: 5,
+    "Document ID": "test123",
+    additionalFeatures: "ویژگی‌های نمونه",
+    seller: "فروشگاه نمونه",
+    material: "پلاستیک",
+    size: "30x20x10",
+    weight: "2 کیلوگرم",
+    color: "سیاه",
+  });
+  }, [productId]);
 
   if (!product) {
     return <div>در حال بارگذاری...</div>;

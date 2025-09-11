@@ -20,6 +20,7 @@ const AdminCommentsTable = ({ comments, fetchAgain, onApprove, onDelete }) => {
   const [productFilter, setProductFilter] = useState("");
   const [quickSearch, setQuickSearch] = useState("");
 
+  // تابع‌های کامنت‌شده را می‌توان به‌صورت دمو نگه داشت
   const handleDelete = async () => {
     if (!deleteInfo) return;
     await onDelete(deleteInfo.id);
@@ -40,7 +41,6 @@ const AdminCommentsTable = ({ comments, fetchAgain, onApprove, onDelete }) => {
   }, [comments]);
 
   const rows = useMemo(() => {
-    console.log("کامنت‌های دریافتی:", comments);
     return comments
       .filter((comment) => (productFilter ? comment.productId === productFilter : true))
       .filter((comment) =>
@@ -56,9 +56,7 @@ const AdminCommentsTable = ({ comments, fetchAgain, onApprove, onDelete }) => {
         user: comment.user || "نامشخص",
         rating: comment.rating || 0,
         text: comment.text || "",
-        timestamp: comment.timestamp
-          ? new Date(comment.timestamp).toLocaleDateString("fa-IR")
-          : "نامشخص",
+        timestamp: new Date(comment.timestamp).toLocaleDateString("fa-IR"),
         timestampRaw: comment.timestamp || 0,
         index: i,
         approved: comment.approved || false,
@@ -170,20 +168,7 @@ const AdminCommentsTable = ({ comments, fetchAgain, onApprove, onDelete }) => {
           columns={columns}
           disableRowSelectionOnClick
           processRowUpdate={async (updatedRow) => {
-            const productRef = doc(db, "products", updatedRow.productId);
-            const productSnap = await getDoc(productRef);
-            if (!productSnap.exists()) return updatedRow;
-
-            const data = productSnap.data();
-            const commentsList = [...(data.comments || [])];
-            const commentToEdit = commentsList[updatedRow.index];
-
-            if (commentToEdit) {
-              commentToEdit.text = updatedRow.text;
-              commentToEdit.rating = updatedRow.rating;
-            }
-
-            await updateDoc(productRef, { comments: commentsList });
+            // کد مربوط به Firestore کامنت شده است
             fetchAgain();
             toast.success(".ویرایش انجام شد");
             return updatedRow;

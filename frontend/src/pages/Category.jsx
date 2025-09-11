@@ -9,39 +9,47 @@ const Category = () => {
   const { categoryName } = useParams();
   const auth = getAuth();
 
-  useEffect(() => {
-  const fetchCategoryProducts = async () => {
-    setLoading(true);
-    try {
-      const categoryMapping = {
-        "چرخ-خیاطی": "چرخ خیاطی",
-        "لوازم-جانبی": "لوازم جانبی",
-      };
-      const normalizedCategory =
-        categoryMapping[categoryName] ||
-        categoryName?.replace("-", " ") ||
-        "چرخ خیاطی";
+//   useEffect(() => {
+//   const fetchCategoryProducts = async () => {
+//     setLoading(true);
+//     try {
+//       const categoryMapping = {
+//         "چرخ-خیاطی": "چرخ خیاطی",
+//         "لوازم-جانبی": "لوازم جانبی",
+//       };
+//       const normalizedCategory =
+//         categoryMapping[categoryName] ||
+//         categoryName?.replace("-", " ") ||
+//         "چرخ خیاطی";
 
-      const base = `https://firebase-proxy.alireza-akhoondi1.workers.dev/products?category=${encodeURIComponent(normalizedCategory)}`;
+//       const base = `https://firebase-proxy.alireza-akhoondi1.workers.dev/products?category=${encodeURIComponent(normalizedCategory)}`;
 
-      const response = await fetch(base);
-      const data = await response.json();
+//       const response = await fetch(base);
+//       const data = await response.json();
 
-      const items = (data.documents || []).map((doc) => ({
-        id: doc.name.split("/").pop(),
-        ...unwrapFields(doc.fields),
-      }));
+//       const items = (data.documents || []).map((doc) => ({
+//         id: doc.name.split("/").pop(),
+//         ...unwrapFields(doc.fields),
+//       }));
 
-      setProducts(items);
-    } catch (error) {
-      console.error("خطا در دریافت محصولات دسته‌بندی:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+//       setProducts(items);
+//     } catch (error) {
+//       console.error("خطا در دریافت محصولات دسته‌بندی:", error);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
-  fetchCategoryProducts();
-}, [categoryName, auth]);
+//   fetchCategoryProducts();
+// }, [categoryName, auth]);
+
+useEffect(() => {
+  setProducts([
+    { id: "1", name: "چرخ خیاطی نمونه 1", price: 1000000, image: "/img/sample.jpg" },
+    { id: "2", name: "چرخ خیاطی نمونه 2", price: 2000000, image: "/img/sample.jpg" },
+  ]);
+  setLoading(false);
+}, [categoryName]);
 
   return (
     <div className="max-w-[1200px] mx-auto py-2 sm:py-4 md:py-8 px-2 sm:px-4 md:px-6 rtl text-right">

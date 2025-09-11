@@ -9,28 +9,36 @@ export default function ProductsSearch({ setIsSearchOpen }) { // Prop برای �
   const searchParams = new URLSearchParams(location.search);
   const searchQuery = searchParams.get("q") || "";
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const productsRef = collection(db, "products");
-        let q = query(productsRef);
-        if (searchQuery) {
-          q = query(productsRef, where("name", ">=", searchQuery), where("name", "<=", searchQuery + "\uf8ff"));
-        }
-        const querySnapshot = await getDocs(q);
-        const items = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setProducts(items);
-      } catch (error) {
-        console.error("خطا در دریافت محصولات:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchProducts = async () => {
+  //     try {
+  //       const productsRef = collection(db, "products");
+  //       let q = query(productsRef);
+  //       if (searchQuery) {
+  //         q = query(productsRef, where("name", ">=", searchQuery), where("name", "<=", searchQuery + "\uf8ff"));
+  //       }
+  //       const querySnapshot = await getDocs(q);
+  //       const items = querySnapshot.docs.map((doc) => ({
+  //         id: doc.id,
+  //         ...doc.data(),
+  //       }));
+  //       setProducts(items);
+  //     } catch (error) {
+  //       console.error("خطا در دریافت محصولات:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchProducts();
+  //   fetchProducts();
+  // }, [searchQuery]);
+
+  useEffect(() => {
+  setProducts([
+    { id: "1", name: "چرخ خیاطی نمونه 1", price: 1000000, image: "/img/sample.jpg" },
+    { id: "2", name: "چرخ خیاطی نمونه 2", price: 2000000, image: "/img/sample.jpg" },
+  ]);
+  setLoading(false);
   }, [searchQuery]);
 
   return (

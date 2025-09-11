@@ -42,39 +42,43 @@ const AddProductForm = () => {
   const [newRating, setNewRating] = useState("");
   const [editMode, setEditMode] = useState(false);
 
+  // useEffect(() => {
+  //   const unsubscribe = onSnapshot(collection(db, "categories"), (snapshot) => {
+  //     const categoriesData = snapshot.docs.map((docSnap) => ({
+  //       id: docSnap.id,
+  //       name: docSnap.data().name,
+  //     }));
+  //     setCategories(categoriesData);
+  //   }, (error) => {
+  //     console.error("خطا در دریافت دسته‌بندی‌ها:", error);
+  //   });
+
+  //   if (id) {
+  //     setEditMode(true);
+  //     const productDocRef = doc(db, "products", id);
+  //     onSnapshot(productDocRef, (docSnap) => {
+  //       if (docSnap.exists()) {
+  //         const productData = docSnap.data();
+  //         setProduct({
+  //           ...productData,
+  //           price: productData.price.toString(),
+  //           inventory: productData.inventory.toString(),
+  //           discount: productData.discount.toString() || "0",
+  //           weight: productData.weight || "",
+  //           customId: id, // تنظیم customId با ID موجود برای ویرایش
+  //         });
+  //       }
+  //     }, (error) => {
+  //       console.error("خطا در دریافت محصول:", error);
+  //     });
+  //   }
+
+  //   return () => unsubscribe();
+  // }, [id]);
+
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "categories"), (snapshot) => {
-      const categoriesData = snapshot.docs.map((docSnap) => ({
-        id: docSnap.id,
-        name: docSnap.data().name,
-      }));
-      setCategories(categoriesData);
-    }, (error) => {
-      console.error("خطا در دریافت دسته‌بندی‌ها:", error);
-    });
-
-    if (id) {
-      setEditMode(true);
-      const productDocRef = doc(db, "products", id);
-      onSnapshot(productDocRef, (docSnap) => {
-        if (docSnap.exists()) {
-          const productData = docSnap.data();
-          setProduct({
-            ...productData,
-            price: productData.price.toString(),
-            inventory: productData.inventory.toString(),
-            discount: productData.discount.toString() || "0",
-            weight: productData.weight || "",
-            customId: id, // تنظیم customId با ID موجود برای ویرایش
-          });
-        }
-      }, (error) => {
-        console.error("خطا در دریافت محصول:", error);
-      });
-    }
-
-    return () => unsubscribe();
-  }, [id]);
+  setCategories([{ id: "1", name: "دسته‌بندی نمونه 1" }, { id: "2", name: "دسته‌بندی نمونه 2" }]);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -138,46 +142,51 @@ const AddProductForm = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!product.name || !product.price || !product.category || !product.inventory || !product.customId) {
-      alert("لطفاً تمام فیلدهای ضروری از جمله Document ID را پر کنید.");
-      return;
-    }
-    try {
-      const finalPrice = product.discount
-        ? Math.round(parseInt(product.price) * (1 - parseInt(product.discount) / 100))
-        : parseInt(product.price);
-      if (editMode && id) {
-        const productDocRef = doc(db, "products", id);
-        await setDoc(productDocRef, {
-          ...product,
-          price: parseInt(product.price),
-          inventory: parseInt(product.inventory),
-          discount: parseInt(product.discount) || 0,
-          weight: product.weight || "",
-          finalPrice,
-          updatedAt: new Date().toISOString(),
-        }, { merge: true });
-        alert("محصول با موفقیت ویرایش شد!");
-      } else {
-        const productDocRef = doc(db, "products", product.customId);
-        await setDoc(productDocRef, {
-          ...product,
-          price: parseInt(product.price),
-          inventory: parseInt(product.inventory),
-          discount: parseInt(product.discount) || 0,
-          weight: product.weight || "",
-          finalPrice,
-          createdAt: new Date().toISOString(),
-        });
-        alert("محصول با موفقیت اضافه شد!");
-      }
-      navigate("/admin/products");
-    } catch (error) {
-      console.error("خطا در پردازش محصول:", error);
-      alert("خطا در پردازش محصول. ممکن است Document ID تکراری باشد.");
-    }
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!product.name || !product.price || !product.category || !product.inventory || !product.customId) {
+  //     alert("لطفاً تمام فیلدهای ضروری از جمله Document ID را پر کنید.");
+  //     return;
+  //   }
+  //   try {
+  //     const finalPrice = product.discount
+  //       ? Math.round(parseInt(product.price) * (1 - parseInt(product.discount) / 100))
+  //       : parseInt(product.price);
+  //     if (editMode && id) {
+  //       const productDocRef = doc(db, "products", id);
+  //       await setDoc(productDocRef, {
+  //         ...product,
+  //         price: parseInt(product.price),
+  //         inventory: parseInt(product.inventory),
+  //         discount: parseInt(product.discount) || 0,
+  //         weight: product.weight || "",
+  //         finalPrice,
+  //         updatedAt: new Date().toISOString(),
+  //       }, { merge: true });
+  //       alert("محصول با موفقیت ویرایش شد!");
+  //     } else {
+  //       const productDocRef = doc(db, "products", product.customId);
+  //       await setDoc(productDocRef, {
+  //         ...product,
+  //         price: parseInt(product.price),
+  //         inventory: parseInt(product.inventory),
+  //         discount: parseInt(product.discount) || 0,
+  //         weight: product.weight || "",
+  //         finalPrice,
+  //         createdAt: new Date().toISOString(),
+  //       });
+  //       alert("محصول با موفقیت اضافه شد!");
+  //     }
+  //     navigate("/admin/products");
+  //   } catch (error) {
+  //     console.error("خطا در پردازش محصول:", error);
+  //     alert("خطا در پردازش محصول. ممکن است Document ID تکراری باشد.");
+  //   }
+  // };
+
+  const handleSubmit = (e) => {
+  e.preventDefault();
+  alert("این فقط تست UI است. ذخیره انجام نمی‌شود!");
   };
 
   return (

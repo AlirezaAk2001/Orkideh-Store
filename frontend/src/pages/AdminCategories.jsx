@@ -20,80 +20,98 @@ const AdminCategories = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const unsubscribe = onSnapshot(
-      collection(db, "categories"),
-      (snapshot) => {
-        const categoriesData = snapshot.docs.map((docSnap) => ({
-          id: docSnap.id,
-          ...docSnap.data(),
-        }));
-        setCategories(categoriesData);
-        setError(null);
-        console.log("دسته‌بندی‌ها با موفقیت لود شدند:", categoriesData);
-      },
-      (err) => {
-        console.error("خطا در دریافت دسته‌بندی‌ها:", err);
-        setError(`خطا در دریافت دسته‌بندی‌ها: ${err.message}`);
-      }
-    );
-    return () => unsubscribe();
-  }, []);
+  // useEffect(() => {
+  //   const unsubscribe = onSnapshot(
+  //     collection(db, "categories"),
+  //     (snapshot) => {
+  //       const categoriesData = snapshot.docs.map((docSnap) => ({
+  //         id: docSnap.id,
+  //         ...docSnap.data(),
+  //       }));
+  //       setCategories(categoriesData);
+  //       setError(null);
+  //       console.log("دسته‌بندی‌ها با موفقیت لود شدند:", categoriesData);
+  //     },
+  //     (err) => {
+  //       console.error("خطا در دریافت دسته‌بندی‌ها:", err);
+  //       setError(`خطا در دریافت دسته‌بندی‌ها: ${err.message}`);
+  //     }
+  //   );
+  //   return () => unsubscribe();
+  // }, []);
 
-  const handleAddCategory = async () => {
-    if (!newCategory.trim()) {
-      setError(".نام دسته‌بندی را وارد کنید");
-      return;
-    }
-    try {
-      await addDoc(collection(db, "categories"), {
-        name: newCategory.trim(),
-        createdAt: new Date().toISOString(),
-      });
-      setNewCategory("");
-      setError(null);
-      console.log(".دسته‌بندی جدید اضافه شد");
-    } catch (err) {
-      console.error("خطا در افزودن دسته‌بندی:", err);
-      setError(`خطا در افزودن دسته‌بندی: ${err.message}`);
-    }
+  // const handleAddCategory = async () => {
+  //   if (!newCategory.trim()) {
+  //     setError(".نام دسته‌بندی را وارد کنید");
+  //     return;
+  //   }
+  //   try {
+  //     await addDoc(collection(db, "categories"), {
+  //       name: newCategory.trim(),
+  //       createdAt: new Date().toISOString(),
+  //     });
+  //     setNewCategory("");
+  //     setError(null);
+  //     console.log(".دسته‌بندی جدید اضافه شد");
+  //   } catch (err) {
+  //     console.error("خطا در افزودن دسته‌بندی:", err);
+  //     setError(`خطا در افزودن دسته‌بندی: ${err.message}`);
+  //   }
+  // };
+
+  const handleAddCategory = () => {
+  alert("این فقط تست UI است. افزودن انجام نمی‌شود!");
   };
+
+  useEffect(() => {
+  setCategories([{ id: "1", name: "دسته‌بندی نمونه 1" }, { id: "2", name: "دسته‌بندی نمونه 2" }]);
+  }, []);
 
   const handleEditCategory = (category) => {
     setEditCategory(category);
     setOpenDialog(true);
   };
 
-  const handleUpdateCategory = async () => {
-    if (!editCategory?.name?.trim()) {
-      setError(".نام دسته‌بندی را وارد کنید");
-      return;
-    }
-    try {
-      await updateDoc(doc(db, "categories", editCategory.id), {
-        name: editCategory.name.trim(),
-      });
-      setOpenDialog(false);
-      setEditCategory(null);
-      setError(null);
-      console.log(".دسته‌بندی به‌روزرسانی شد");
-    } catch (err) {
-      console.error("خطا در به‌روزرسانی دسته‌بندی:", err);
-      setError(`خطا در به‌روزرسانی دسته‌بندی: ${err.message}`);
-    }
+  // const handleUpdateCategory = async () => {
+  //   if (!editCategory?.name?.trim()) {
+  //     setError(".نام دسته‌بندی را وارد کنید");
+  //     return;
+  //   }
+  //   try {
+  //     await updateDoc(doc(db, "categories", editCategory.id), {
+  //       name: editCategory.name.trim(),
+  //     });
+  //     setOpenDialog(false);
+  //     setEditCategory(null);
+  //     setError(null);
+  //     console.log(".دسته‌بندی به‌روزرسانی شد");
+  //   } catch (err) {
+  //     console.error("خطا در به‌روزرسانی دسته‌بندی:", err);
+  //     setError(`خطا در به‌روزرسانی دسته‌بندی: ${err.message}`);
+  //   }
+  // };
+
+  const handleUpdateCategory = () => {
+  alert("این فقط تست UI است. به‌روزرسانی انجام نمی‌شود!");
+  setOpenDialog(false);
+  setEditCategory(null);
   };
 
-  const handleDeleteCategory = async (id) => {
-    if (window.confirm("آیا مطمئن هستید که می‌خواهید این دسته‌بندی را حذف کنید؟")) {
-      try {
-        await deleteDoc(doc(db, "categories", id));
-        setError(null);
-        console.log(".دسته‌بندی حذف شد");
-      } catch (err) {
-        console.error("خطا در حذف دسته‌بندی:", err);
-        setError(`خطا در حذف دسته‌بندی: ${err.message}`);
-      }
-    }
+  // const handleDeleteCategory = async (id) => {
+  //   if (window.confirm("آیا مطمئن هستید که می‌خواهید این دسته‌بندی را حذف کنید؟")) {
+  //     try {
+  //       await deleteDoc(doc(db, "categories", id));
+  //       setError(null);
+  //       console.log(".دسته‌بندی حذف شد");
+  //     } catch (err) {
+  //       console.error("خطا در حذف دسته‌بندی:", err);
+  //       setError(`خطا در حذف دسته‌بندی: ${err.message}`);
+  //     }
+  //   }
+  // };
+
+  const handleDeleteCategory = (id) => {
+  alert("این فقط تست UI است. حذف انجام نمی‌شود!");
   };
 
   return (

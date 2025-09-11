@@ -4,8 +4,6 @@ import { ShoppingCart, Heart, User2, Info } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useFavorites } from "../context/FavoritesContext";
 import { useCart } from "../context/CartContext";
-import { db } from "../firebase/firebaseConfig";
-import { doc, onSnapshot, collection } from "firebase/firestore";
 
 export default function Header() {
   const { currentUser, loading } = useAuth();
@@ -33,34 +31,45 @@ export default function Header() {
   };
 
   // لود realtime محصولات از Firestore
+  // useEffect(() => {
+  //   const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
+  //     const productsData = snapshot.docs.map((doc) => ({
+  //       id: doc.id,
+  //       ...doc.data(),
+  //     }));
+  //     setProducts(productsData);
+  //   });
+  //   return () => unsubscribe();
+  // }, []);
+
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
-      const productsData = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setProducts(productsData);
-    });
-    return () => unsubscribe();
+  setProducts([
+    { id: "1", name: "چرخ خیاطی نمونه 1", image: "/img/sample.jpg" },
+    { id: "2", name: "چرخ خیاطی نمونه 2", image: "/img/sample.jpg" },
+  ]);
   }, []);
 
   // لود اطلاعات کاربر و عکس پروفایل
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     const userDocRef = doc(db, "users", currentUser.uid);
+  //     const unsubscribe = onSnapshot(userDocRef, (docSnap) => {
+  //       if (docSnap.exists()) {
+  //         const userData = docSnap.data();
+  //         setProfileImageUrl(userData.profileImageUrl || null);
+  //       } else {
+  //         setProfileImageUrl(null);
+  //       }
+  //     });
+  //     return () => unsubscribe();
+  //   } else {
+  //     setProfileImageUrl(null);
+  //   }
+  // }, [currentUser]);
+
   useEffect(() => {
-    if (currentUser) {
-      const userDocRef = doc(db, "users", currentUser.uid);
-      const unsubscribe = onSnapshot(userDocRef, (docSnap) => {
-        if (docSnap.exists()) {
-          const userData = docSnap.data();
-          setProfileImageUrl(userData.profileImageUrl || null);
-        } else {
-          setProfileImageUrl(null);
-        }
-      });
-      return () => unsubscribe();
-    } else {
-      setProfileImageUrl(null);
-    }
-  }, [currentUser]);
+  setProfileImageUrl("/img/default-profile.jpg"); // یه تصویر پیش‌فرض
+  }, []);
 
   // فیلتر محصولات بر اساس جستجو
   useEffect(() => {

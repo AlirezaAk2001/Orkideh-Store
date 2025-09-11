@@ -10,60 +10,70 @@ const ProductComments = ({ productId, onCommentSubmitted }) => {
   const navigate = useNavigate();
   const [comments, setComments] = useState([]);
 
+  // useEffect(() => {
+  //   const fetchComments = async () => {
+  //     try {
+  //       const productRef = doc(db, "products", productId);
+  //       const productSnap = await getDoc(productRef);
+  //       if (productSnap.exists()) {
+  //         const productData = productSnap.data();
+  //         const allComments = (productData.comments || []).map((comment) => ({
+  //           ...comment,
+  //           productId,
+  //         }));
+  //         const approvedComments = allComments.filter(
+  //           (comment) => comment.approved === true
+  //         );
+  //         setComments(approvedComments);
+  //       }
+  //     } catch (err) {
+  //       console.error("خطا در دریافت نظرات:", err);
+  //     }
+  //   };
+  //   fetchComments();
+  // }, [productId]);
+
   useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        const productRef = doc(db, "products", productId);
-        const productSnap = await getDoc(productRef);
-        if (productSnap.exists()) {
-          const productData = productSnap.data();
-          const allComments = (productData.comments || []).map((comment) => ({
-            ...comment,
-            productId,
-          }));
-          const approvedComments = allComments.filter(
-            (comment) => comment.approved === true
-          );
-          setComments(approvedComments);
-        }
-      } catch (err) {
-        console.error("خطا در دریافت نظرات:", err);
-      }
-    };
-    fetchComments();
+  setComments([
+    { user: "کاربر نمونه", rating: 4, text: "نظر نمونه", timestamp: new Date().toISOString(), productId, approved: true },
+  ]);
   }, [productId]);
 
-  const handleCommentSubmit = async (newComment) => {
-    if (!currentUser) {
-      Swal.fire({
-        icon: "warning",
-        title: "هشدار",
-        text: "!برای ثبت نظر ابتدا باید ثبت نام/ورود کنید",
-        confirmButtonText: "باشه",
-        timer: 3000,
-        timerProgressBar: true,
-      }).then(() => {
-        navigate("/login");
-      });
-      return;
-    }
+  // const handleCommentSubmit = async (newComment) => {
+  //   if (!currentUser) {
+  //     Swal.fire({
+  //       icon: "warning",
+  //       title: "هشدار",
+  //       text: "!برای ثبت نظر ابتدا باید ثبت نام/ورود کنید",
+  //       confirmButtonText: "باشه",
+  //       timer: 3000,
+  //       timerProgressBar: true,
+  //     }).then(() => {
+  //       navigate("/login");
+  //     });
+  //     return;
+  //   }
 
-    try {
-      const commentsRef = collection(db, "products", productId, "comments");
-      await addDoc(commentsRef, {
-        ...newComment,
-        timestamp: new Date().toISOString(),
-      });
-      if (onCommentSubmitted) onCommentSubmitted();
-    } catch (err) {
-      console.error("خطا در ثبت نظر:", err);
-      Swal.fire({
-        icon: "error",
-        title: "خطا",
-        text: "خطا در ثبت نظر. لطفاً دوباره تلاش کنید.",
-        confirmButtonText: "باشه",
-      });
-    }
+  //   try {
+  //     const commentsRef = collection(db, "products", productId, "comments");
+  //     await addDoc(commentsRef, {
+  //       ...newComment,
+  //       timestamp: new Date().toISOString(),
+  //     });
+  //     if (onCommentSubmitted) onCommentSubmitted();
+  //   } catch (err) {
+  //     console.error("خطا در ثبت نظر:", err);
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "خطا",
+  //       text: "خطا در ثبت نظر. لطفاً دوباره تلاش کنید.",
+  //       confirmButtonText: "باشه",
+  //     });
+  //   }
+  // };
+
+  const handleCommentSubmit = (newComment) => {
+  alert("این فقط تست UI است. نظر ثبت نمی‌شود!");
   };
 
   return (

@@ -1,51 +1,37 @@
-// VerifyPage.jsx
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Swal from "sweetalert2";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 
 const VerifyPage = () => {
-  const { updateUser } = useAuth();
   const [verificationCode, setVerificationCode] = useState("");
   const [codeError, setCodeError] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
   const { userEmail, role } = location.state || {};
 
-  const handleVerifyCode = async (e) => {
+  const handleVerifyCode = (e) => {
     e.preventDefault();
-
     if (!userEmail) {
       Swal.fire("خطا", "ایمیل کاربر یافت نشد. لطفاً دوباره ثبت‌نام کنید.", "error");
       navigate("/auth", { replace: true });
       return;
     }
-
-    try {
-      const resp = await fetch("/api/auth/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: userEmail, code: verificationCode }),
-      });
-
-      const data = await resp.json();
-      if (!resp.ok) throw new Error(data.error || "Verify failed");
-
-      updateUser({ verified: true }); // به‌روزرسانی وضعیت تأیید
+    if (verificationCode === "1234") { // کد نمونه برای تست
       Swal.fire("موفق", "ایمیل شما با موفقیت تأیید شد!", "success");
       setCodeError("");
-
       if (role === "admin") {
         navigate("/admin", { replace: true });
       } else {
         navigate("/login", { replace: true });
       }
-    } catch (error) {
-      setCodeError(error.message);
-      Swal.fire("خطا", `مشکلی در تأیید ایمیل رخ داد: ${error.message}`, "error");
+    } else {
+      setCodeError("کد تأیید اشتباه است.");
+      Swal.fire("خطا", "کد تأیید اشتباه است.", "error");
     }
   };
+
+  const updateUser = () => {};
 
   return (
     <>

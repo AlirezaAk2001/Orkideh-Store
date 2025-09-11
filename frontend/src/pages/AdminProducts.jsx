@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { collection, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase/firebaseConfig";
 import { DataGrid, GridToolbarContainer, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import {
   Button,
@@ -19,27 +17,35 @@ const AdminProducts = () => {
   const [editProduct, setEditProduct] = useState(null);
   const [editData, setEditData] = useState({});
 
+  // useEffect(() => {
+  //   fetchProducts();
+  // }, []);
+
+  // const fetchProducts = async () => {
+  //   setLoading(true);
+  //   const snapshot = await getDocs(collection(db, "products"));
+  //   const productsList = snapshot.docs.map((doc) => ({
+  //     id: doc.id,
+  //     ...doc.data(),
+  //   }));
+  //   setProducts(productsList);
+  //   setLoading(false);
+  // };
+
+  // const handleDelete = async (id) => {
+  //   if (window.confirm("آیا از حذف این محصول مطمئن هستید؟")) {
+  //     await deleteDoc(doc(db, "products", id));
+  //     fetchProducts();
+  //   }
+  // };
+
   useEffect(() => {
-    fetchProducts();
+  setProducts([
+    { id: "1", name: "محصول نمونه 1", price: 100000, discount: 10, inventory: 50, identifier: "ID001" },
+    { id: "2", name: "محصول نمونه 2", price: 200000, discount: 20, inventory: 30, identifier: "ID002" },
+  ]);
+  setLoading(false);
   }, []);
-
-  const fetchProducts = async () => {
-    setLoading(true);
-    const snapshot = await getDocs(collection(db, "products"));
-    const productsList = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    setProducts(productsList);
-    setLoading(false);
-  };
-
-  const handleDelete = async (id) => {
-    if (window.confirm("آیا از حذف این محصول مطمئن هستید؟")) {
-      await deleteDoc(doc(db, "products", id));
-      fetchProducts();
-    }
-  };
 
   const handleEdit = (product) => {
     setEditProduct(product);
@@ -50,12 +56,12 @@ const AdminProducts = () => {
     setEditData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleUpdate = async () => {
-    const productRef = doc(db, "products", editProduct.id);
-    await updateDoc(productRef, editData);
-    setEditProduct(null);
-    fetchProducts();
-  };
+  // const handleUpdate = async () => {
+  //   const productRef = doc(db, "products", editProduct.id);
+  //   await updateDoc(productRef, editData);
+  //   setEditProduct(null);
+  //   fetchProducts();
+  // };
 
   const columns = [
     { field: "name", headerName: "نام محصول", flex: 1, align: "right" },

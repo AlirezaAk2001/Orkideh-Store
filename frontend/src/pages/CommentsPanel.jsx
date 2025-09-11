@@ -6,46 +6,11 @@ const CommentsPanel = () => {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    const fetchComments = async () => {
-      const productsSnap = await getDocs(collection(db, "products"));
-      const commentsData = [];
-
-      productsSnap.forEach((productDoc) => {
-        const productId = productDoc.id;
-        const productData = productDoc.data();
-        const comments = productData.comments || [];
-
-        comments.forEach((comment, index) => {
-          commentsData.push({
-            id: `${productId}_${index}`,
-            index,
-            productId,
-            user: comment.user,
-            rating: comment.rating,
-            text: comment.text,
-            timestamp: comment.timestamp || null,
-          });
-        });
-      });
-
-      setRows(commentsData);
-    };
-
-    fetchComments();
+    setRows([
+      { id: "1_0", index: 0, productId: "1", user: "کاربر 1", rating: 4, text: "نظر نمونه", timestamp: new Date().toISOString() },
+      { id: "2_0", index: 0, productId: "2", user: "کاربر 2", rating: 5, text: "عالی بود", timestamp: new Date().toISOString() },
+    ]);
   }, []);
-
-  const handleDelete = async (productId, indexToRemove) => {
-    const productRef = doc(db, "products", productId);
-    const productSnap = await getDoc(productRef);
-    const productData = productSnap.data();
-    const updatedComments = [...(productData.comments || [])];
-
-    updatedComments.splice(indexToRemove, 1);
-
-    await updateDoc(productRef, { comments: updatedComments });
-
-    setRows((prev) => prev.filter((r) => r.id !== `${productId}_${indexToRemove}`));
-  };
 
   const formatDate = (timestamp) => {
     if (!timestamp) return "-";
@@ -72,9 +37,9 @@ const CommentsPanel = () => {
         <Button
           variant="contained"
           color="error"
-          onClick={() => handleDelete(params.row.productId, params.row.index)}
           size="small"
           sx={{ alignSelf: "center" }}
+          disabled // غیرفعال کردن دکمه تا منطق حذف پیاده‌سازی شود
         >
           حذف
         </Button>
