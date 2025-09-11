@@ -13,8 +13,6 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckIcon from "@mui/icons-material/Check";
 import SearchIcon from "@mui/icons-material/Search";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase/firebaseConfig";
 import toast from "react-hot-toast";
 
 const AdminCommentsTable = ({ comments, fetchAgain, onApprove, onDelete }) => {

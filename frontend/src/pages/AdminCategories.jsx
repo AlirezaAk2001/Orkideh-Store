@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { db } from "../firebase/firebaseConfig";
-import { collection, addDoc, onSnapshot, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import {
   Button,
   TextField,

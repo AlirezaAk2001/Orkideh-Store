@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { collection, getDocs, updateDoc, doc, getDoc, deleteDoc } from "firebase/firestore";
-import { db } from "../firebase/firebaseConfig";
 import AdminCommentsTable from "./AdminCommentsTable";
 import Swal from "sweetalert2";
 

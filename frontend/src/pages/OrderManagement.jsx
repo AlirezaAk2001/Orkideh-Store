@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, Table, TableBody, TableCell, TableHead, TableRow, Select, MenuItem, Button } from "@mui/material";
-import { collection, query, onSnapshot, doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase/firebaseConfig";
 
 const OrderManagement = () => {
   const [orders, setOrders] = useState([]);

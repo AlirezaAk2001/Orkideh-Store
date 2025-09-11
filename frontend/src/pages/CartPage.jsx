@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db } from "../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
-import { doc, collection, setDoc } from "firebase/firestore";
 import { Button } from "../components/ui/button";
 import { useCart } from "../context/CartContext";
 import Swal from "sweetalert2";

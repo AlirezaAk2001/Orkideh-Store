@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { unwrapFields } from "../utils/fsHelpers";
 import ProductCard from "./ProductCard";
 import { useParams } from "react-router-dom";

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CommentsForm from "./CommentsForm";
 import CommentsItem from "./CommentsItem";
-import { db } from "../firebase/firebaseConfig";
-import { collection, addDoc, doc, getDoc } from "firebase/firestore";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";

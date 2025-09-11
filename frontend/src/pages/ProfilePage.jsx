@@ -1,7 +1,4 @@
 import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db } from "../firebase/firebaseConfig";
-import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { LogOut, Package, Camera } from "lucide-react";
 import {

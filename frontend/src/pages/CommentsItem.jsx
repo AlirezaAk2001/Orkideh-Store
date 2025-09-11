@@ -1,8 +1,6 @@
 import React from "react";
 import StarRating from "./StarRating";
 import { useAuth } from "../context/AuthContext";
-import { db } from "../firebase/firebaseConfig";
-import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import Swal from "sweetalert2";
 
 const CommentsItem = ({ comment }) => {

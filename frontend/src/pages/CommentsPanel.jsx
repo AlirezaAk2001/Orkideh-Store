@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { doc, getDocs, collection, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../../firebase";
 import { Button } from "@mui/material";
 
 const CommentsPanel = () => {

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { db } from "../firebase/firebaseConfig";
-import { collection, getDocs, query, where } from "firebase/firestore";
 import ProductCard from "./ProductCard";
 
 export default function ProductsSearch({ setIsSearchOpen }) { // Prop برای بستن منو

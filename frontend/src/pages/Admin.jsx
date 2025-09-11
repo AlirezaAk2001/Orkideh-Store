@@ -19,7 +19,6 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
 // 📌 لیست ایمیل‌های مجاز برای ادمین
 const allowedAdmins = ["alireza.akhoondi1@gmail.com"];
